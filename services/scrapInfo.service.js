@@ -209,8 +209,6 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
 
         // 1. Go to LinkedIn login page
         await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
-        await page.waitForTimeout(3000); // Waits for 3 seconds
-        console.log('waittimeout 1')
 
         // 2. Login with credentials
         await page.type('#username', process.env.LINKEDIN_EMAIL); // Your LinkedIn email
@@ -219,9 +217,6 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         // await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
         console.log("Logged in to LinkedIn");
-        await page.waitForTimeout(3000); // Waits for 3 seconds
-        console.log('waittimeout 2')
-
 
         // 3. Wait for navigation to the homepage
         // await page.waitForNavigation({ waitUntil: 'networkidle2' });
