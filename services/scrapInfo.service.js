@@ -204,8 +204,8 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         await page.setUserAgent(userAgent);
 
         // Increase the timeout globally
-        // page.setDefaultNavigationTimeout(120000); // 120 seconds
-        // page.setDefaultTimeout(120000); // 120 seconds for selectors
+        page.setDefaultNavigationTimeout(150000); // 120 seconds
+        page.setDefaultTimeout(150000); // 120 seconds for selectors
 
         // 1. Go to LinkedIn login page
         await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
