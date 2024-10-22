@@ -8,8 +8,8 @@ dotenv.config(); // add the config
 
 
 import { loggerService } from './services/logger.service.js';
-import { searchGoogleMaps } from './services/scrap.service.js';
-import { extractGoogleWebsiteInfo, retriveResFromGoogle, searchGoogle, extractLinkedInProfileInfo } from './services/scrapInfo.service.js';
+import { extractLinkedInProfileInfoLocaly, extractLinkedInProfileInfoTest, searchGoogleMaps } from './services/scrap.service.js';
+import { extractGoogleWebsiteInfo, retriveResFromGoogle, searchGoogle, extractLinkedInProfileInfoBrightData } from './services/scrapInfo.service.js';
 
 const app = express()
 
@@ -85,7 +85,7 @@ app.post('/scrape-website-info', async (req, res) => {
 
 // API endpoint to scrape LinkedIn profile using Puppeteer
 app.post('/scrape-linkedin-profile', async (req, res) => {
-    const { firstName, lastName, title } = req.body;
+    const { firstName, lastName, title, vname } = req.body;
 
     if (!firstName || !lastName || !title) {
         return res.status(400).json({ error: 'firstName, lastName, and title are required' });
@@ -93,7 +93,10 @@ app.post('/scrape-linkedin-profile', async (req, res) => {
 
     try {
         // Call the LinkedIn scraping function with the provided details
-        const profileInfo = await extractLinkedInProfileInfo(firstName, lastName, title);
+        //test locally
+        // const profileInfo = await extractLinkedInProfileInfoLocaly(firstName, lastName, title, vname);
+        // const profileInfo = await extractLinkedInProfileInfoTest(firstName, lastName, title, vname);
+        const profileInfo = await extractLinkedInProfileInfoBrightData(firstName, lastName, title, vname);
 
         if (!profileInfo) {
             return res.status(500).json({ error: 'Failed to scrape LinkedIn profile' });

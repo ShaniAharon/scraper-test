@@ -188,9 +188,9 @@ export async function extractGoogleWebsiteInfo(url) {
     }
 }
 
-
+// brightdata test 
 // Function to log in to LinkedIn and scrape a user's profile info
-export async function extractLinkedInProfileInfo(firstName, lastName, title) {
+export async function extractLinkedInProfileInfoBrightData(firstName, lastName, title, vname) {
     const userAgent = selectRandomUserAgent(); // Select a random user agent
     try {
         const start = Date.now();
@@ -217,7 +217,7 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         // 1. Go to LinkedIn login page
         // await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
         // await page.goto('https://www.linkedin.com/in/tommcclelland/#main-content', { waitUntil: 'domcontentloaded' });
-        await page.goto('https://www.linkedin.com/in/tommcclelland/#main-content');
+        await page.goto(`https://www.linkedin.com/in/${vname}/#main-content`);
         console.log('login loaded')
 
         // 2. Login with credentials
