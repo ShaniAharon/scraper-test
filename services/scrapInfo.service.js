@@ -211,48 +211,53 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         await page.setUserAgent(userAgent);
 
         // Increase the timeout globally
-        page.setDefaultNavigationTimeout(150000); // 120 seconds
-        page.setDefaultTimeout(150000); // 120 seconds for selectors
+        // page.setDefaultNavigationTimeout(150000); // 120 seconds
+        // page.setDefaultTimeout(150000); // 120 seconds for selectors
 
         // 1. Go to LinkedIn login page
-        await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
+        // await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
+        // await page.goto('https://www.linkedin.com/in/tommcclelland/#main-content', { waitUntil: 'domcontentloaded' });
+        await page.goto('https://www.linkedin.com/in/tommcclelland/#main-content');
+        console.log('login loaded')
 
         // 2. Login with credentials
-        await page.type('#username', process.env.LINKEDIN_EMAIL); // Your LinkedIn email
-        await page.type('#password', process.env.LINKEDIN_PASSWORD); // Your LinkedIn password
-        await page.click('button[type="submit"]');
+        // await page.type('#username', process.env.LINKEDIN_EMAIL); // Your LinkedIn email
+        // await page.type('#password', process.env.LINKEDIN_PASSWORD); // Your LinkedIn password
+        // await page.click('button[type="submit"]');
         // await page.waitForNavigation({ waitUntil: 'networkidle0' });
 
         console.log("Logged in to LinkedIn");
 
         // 3. Wait for navigation to the homepage
         // await page.waitForNavigation({ waitUntil: 'networkidle2' });
-        await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
+        // await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
         console.log("linkedin page loaded");
 
 
 
         // 4. Ensure the search bar is visible and ready
-        await page.waitForSelector('.search-global-typeahead__input', { timeout: 120000 });
-        // await page.waitForSelector('[class*="search-global-typeahead__input"]', { timeout: 200000 });
-        console.log('global search visible')
+        // await page.waitForSelector('.search-global-typeahead__input', { timeout: 30000 });
+        // // await page.waitForSelector('[class*="search-global-typeahead__input"]', { timeout: 200000 });
+        // console.log('global search visible')
 
 
-        // 3. Search for the user
-        console.log('`${firstName} ${lastName} ${title}`', `${firstName} ${lastName} ${title}`)
-        const searchQuery = `${firstName} ${lastName} ${title}`;
-        await page.type('.search-global-typeahead__input', searchQuery); // Search in LinkedIn search box
-        await page.keyboard.press('Enter');
+        // // 3. Search for the user
+        // console.log('`${firstName} ${lastName} ${title}`', `${firstName} ${lastName} ${title}`)
+        // const searchQuery = `${firstName} ${lastName} ${title}`;
+        // await page.type('.search-global-typeahead__input', searchQuery); // Search in LinkedIn search box
+        // await page.keyboard.press('Enter');
 
-        await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('.search-results-container', { timeout: 120000 });
+        // await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
+        // await page.waitForSelector('.search-results-container', { timeout: 120000 });
 
-        // 4. Click on the first search result (profile)
-        await page.click('.search-results-container a'); // Click on the first result
-        await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('.scaffold-layout__main', { timeout: 120000 });
-        // await page.waitForSelector('.pv-profile-card', { timeout: 20000 });
-        await page.waitForSelector('#about', { timeout: 20000 });
+        // // 4. Click on the first search result (profile)
+        //test modal dissmis click
+        // await page.click('.modal__dismiss'); // Click on the first result
+        // await page.click('.search-results-container a'); // Click on the first result
+        // await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
+        // await page.waitForSelector('.scaffold-layout__main', { timeout: 120000 });
+        // // await page.waitForSelector('.pv-profile-card', { timeout: 20000 });
+        // await page.waitForSelector('#about', { timeout: 20000 });
         // await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
 
 
@@ -278,6 +283,7 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         //     return profileInfo;
         // });
 
+        ///worked ish
         // const result = await page.evaluate(() => {
         //     //.scaffold-layout__main
         //     const textCollected = Array.from(document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li')).map(el => el.innerText);
@@ -285,6 +291,8 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         //     // return { textCollected, imgUrls };
         //     return textCollected;
         // });
+        // console.log('result', result)
+
         // const result = await page.evaluate(() => {
         //     const textCollected = Array.from(
         //         document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, div, span, ul, li, a, section')
@@ -292,18 +300,20 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
 
         //     return textCollected;
         // });
+        //tset here 
         const result = await page.evaluate(() => {
-            const mainDiv = document.querySelector('.scaffold-layout__main'); // Target the specific div
-            if (!mainDiv) return []; // Return empty if the div is not found
+            // const mainDiv = document.querySelector('.scaffold-layout__main'); // Target the specific div
+            // if (!mainDiv) return []; // Return empty if the div is not found
 
             // Collect text from inside the mainDiv
             const textCollected = Array.from(
-                mainDiv.querySelectorAll('p, h1, h2, h3, h4, h5, h6, div, span, ul, ol, li, a, section, article, blockquote')
+                document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, div, span, ul, ol, li, a, section, article, blockquote')
             ).map(el => el.innerText.trim()).filter(text => text.length > 0); // Filter out empty texts
             // Remove duplicate texts using Set
             const uniqueText = Array.from(new Set(textCollected));
-            const imgEl = mainDiv.querySelector('.pv-top-card__non-self-photo-wrapper img')
-            const img = imgEl ? imgEl.src : '';
+            const imgEl = document.querySelector('.pv-top-card__non-self-photo-wrapper img')
+            const imgEl2 = document.querySelector('.contextual-sign-in-modal__img')
+            const img = imgEl ? imgEl.src : imgEl2.src;
             uniqueText.push(img)
             return uniqueText;
         });
