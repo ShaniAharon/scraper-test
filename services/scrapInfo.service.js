@@ -195,9 +195,16 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
     try {
         const start = Date.now();
 
-        const browser = await puppeteer.launch({
-            headless: false, // Set this to false if you want see it run on browser
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+        // const browser = await puppeteer.launch({
+        //     headless: false, // Set this to false if you want see it run on browser
+        //     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+        // });
+        // Connect to Scraping Browser
+        const AUTH = process.env.AUTH;
+        const SBR_WS_ENDPOINT = `wss://${AUTH}@brd.superproxy.io:9222`;
+
+        const browser = await puppeteer.connect({
+            browserWSEndpoint: SBR_WS_ENDPOINT,
         });
 
         const page = await browser.newPage();
