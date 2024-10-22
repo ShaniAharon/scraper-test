@@ -158,7 +158,7 @@ cron.schedule('*/13 * * * *', async () => {
         console.log('Wake-up task running');
         //test
         // await axios.get(`https://search-google-map-img.onrender.com/wake-up`);
-        // await axios.get(`https://search-google-map-img-production.up.railway.app/wake-up`);
+        await axios.get(`https://scraper-test-production.up.railway.app/wake-up`);
     } catch (error) {
         console.error('Error during wake-up task:', error);
     }
