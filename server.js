@@ -153,7 +153,7 @@ app.get('/wake-up', (req, res) => {
 });
 
 // Wake-up task to keep the service active
-cron.schedule('*/13 * * * *', async () => {
+cron.schedule('*/5 * * * *', async () => {
     try {
         console.log('Wake-up task running');
         //test

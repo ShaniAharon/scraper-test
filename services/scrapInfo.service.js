@@ -203,6 +203,10 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         const page = await browser.newPage();
         await page.setUserAgent(userAgent);
 
+        // Increase the timeout globally
+        // page.setDefaultNavigationTimeout(120000); // 120 seconds
+        // page.setDefaultTimeout(120000); // 120 seconds for selectors
+
         // 1. Go to LinkedIn login page
         await page.goto('https://www.linkedin.com/login', { waitUntil: 'domcontentloaded' });
 
@@ -217,10 +221,13 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         // 3. Wait for navigation to the homepage
         // await page.waitForNavigation({ waitUntil: 'networkidle2' });
         await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
+        console.log("linkedin page loaded");
+
 
 
         // 4. Ensure the search bar is visible and ready
-        await page.waitForSelector('.search-global-typeahead__input', { timeout: 10000 });
+        await page.waitForSelector('.search-global-typeahead__input', { timeout: 120000 });
+        console.log('global search visible')
 
 
         // 3. Search for the user
@@ -230,12 +237,12 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         await page.keyboard.press('Enter');
 
         await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('.search-results-container', { timeout: 10000 });
+        await page.waitForSelector('.search-results-container', { timeout: 120000 });
 
         // 4. Click on the first search result (profile)
         await page.click('.search-results-container a'); // Click on the first result
         await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
-        await page.waitForSelector('.scaffold-layout__main', { timeout: 10000 });
+        await page.waitForSelector('.scaffold-layout__main', { timeout: 120000 });
         // await page.waitForSelector('.pv-profile-card', { timeout: 20000 });
         await page.waitForSelector('#about', { timeout: 20000 });
         // await page.waitForNavigation({ waitUntil: 'domcontentloaded' });
@@ -362,7 +369,7 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         return result;
     } catch (error) {
         console.log("Error at extractLinkedInProfileInfo:", error.message);
-        return null;
+        return "";//try empty array
     }
 }
 
