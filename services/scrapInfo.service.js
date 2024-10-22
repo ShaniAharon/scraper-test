@@ -196,7 +196,7 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
         const start = Date.now();
 
         const browser = await puppeteer.launch({
-            headless: true, // Set this to false if you want see it run on browser
+            headless: false, // Set this to false if you want see it run on browser
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
         });
 
@@ -226,7 +226,7 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
 
 
         // 4. Ensure the search bar is visible and ready
-        await page.waitForSelector('.search-global-typeahead__input', { timeout: 200000 });
+        await page.waitForSelector('.search-global-typeahead__input', { timeout: 120000 });
         // await page.waitForSelector('[class*="search-global-typeahead__input"]', { timeout: 200000 });
         console.log('global search visible')
 
