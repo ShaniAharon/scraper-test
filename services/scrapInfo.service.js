@@ -226,8 +226,8 @@ export async function extractLinkedInProfileInfo(firstName, lastName, title) {
 
 
         // 4. Ensure the search bar is visible and ready
-        // await page.waitForSelector('.search-global-typeahead__input', { timeout: 200000 });
-        await page.waitForSelector('[class*="search-global-typeahead__input"]', { timeout: 200000 });
+        await page.waitForSelector('.search-global-typeahead__input', { timeout: 200000 });
+        // await page.waitForSelector('[class*="search-global-typeahead__input"]', { timeout: 200000 });
         console.log('global search visible')
 
 
